@@ -6,8 +6,6 @@ import { InputAdornment } from "@mui/material";
 import { Button } from "@mui/material";
 import Popover from "@mui/material/Popover";
 
-import CalendarMonth from "@mui/icons-material/CalendarMonth";
-
 // Localization adapter and calendar
 import { DateCalendar } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -15,7 +13,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { it } from "date-fns/locale";
 
 // To-do reducer hook
-import { useTodo } from "../../context/todoContext";
+import { useTodo } from "../../container/context/todoContext";
 
 // Date formatter
 import { format } from "date-fns";
@@ -23,7 +21,14 @@ import { format } from "date-fns";
 // Info tooltip
 import Tooltip from "@mui/material/Tooltip";
 
-const TodoAddForm = () => {
+// To-do types
+import { SubmitTodoInterf } from "../../types/functionsTypes";
+
+type Props = {
+  handleSubmitTodo: (val: SubmitTodoInterf) => void;
+};
+
+const TodoAddForm = ({ handleSubmitTodo }: Props) => {
   const [text, setText] = useState("");
   const [popAnchor, setPopAnchor] = useState<HTMLButtonElement | null>(null);
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
@@ -49,14 +54,11 @@ const TodoAddForm = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch({
-      type: "ADD",
-      payload: {
-        id: Math.random(),
-        completed: false,
-        todo: text,
-        date: pickedDate,
-      },
+    handleSubmitTodo({
+      id: Math.random(),
+      completed: false,
+      todo: text,
+      date: pickedDate,
     });
   };
 
@@ -73,9 +75,10 @@ const TodoAddForm = () => {
     setPickedDate(val);
   };
 
-  const handleSortList = () => {
-    dispatch({ type: "SORT", payload: "" });
-  };
+  // It was just a foolish idea ;)
+  // const handleSortList = () => {
+  //   dispatch({ type: "SORT", payload: "" });
+  // };
 
   return (
     <LocalizationProvider adapterLocale={it} dateAdapter={AdapterDateFns}>

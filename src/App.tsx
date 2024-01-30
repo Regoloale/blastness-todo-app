@@ -1,31 +1,25 @@
 // Baseline
 import CssBaseline from "@mui/material/CssBaseline";
 
-// App wrapper
-import AppWrapper from "./components/AppWrapper";
+// Container
+import TodoContainer from "./container/TodoContainer";
 
 // Custom theme priver
-import { CustomThemeProvider } from "./context/themeCtx";
-
-// Theme
-import { useTheme } from "@mui/material";
+import { CustomThemeProvider } from "./container/context/themeCtx";
 
 // Components
 import Header from "./components/header/Header";
-import TodoMain from "./components/todo";
 
 // T-odo context
-import { TodoProvider } from "./context/todoContext";
+import { TodoProvider } from "./container/context/todoContext";
 
 function App() {
-  const theme = useTheme();
-
   return (
     <CustomThemeProvider>
       <CssBaseline />
       <Header />
       <TodoProvider>
-        <TodoMain />
+        <TodoContainer />
       </TodoProvider>
     </CustomThemeProvider>
   );

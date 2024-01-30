@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import { Button } from "@mui/material";
 
 // Custom theme
-import { useCustomTheme } from "../context/themeCtx";
+import { useCustomTheme } from "../container/context/themeCtx";
 
 // Icon
 import LightModeIcon from "@mui/icons-material/LightMode";

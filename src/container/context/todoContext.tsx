@@ -11,7 +11,7 @@ import React, {
 import { todoReducer } from "./reducers/todoReducer";
 
 // Types and interfaces
-import { Todo as TodoInterface, TodoAction } from "../types/todo";
+import { Todo as TodoInterface, TodoAction } from "../../types/todo";
 
 export const TodoContext = createContext<{
   todos: TodoInterface[];

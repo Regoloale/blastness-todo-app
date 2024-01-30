@@ -1,5 +1,4 @@
-import { useState } from "react";
-import React from "react";
+import { MouseEventHandler } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -7,41 +6,46 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import { Box, Typography } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+
+// Icons
 import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { Box, Typography } from "@mui/material";
 
 // Transition component
 import { TransitionGroup } from "react-transition-group";
 import Collapse from "@mui/material/Collapse";
 
 // Context
-import { useTodo } from "../../context/todoContext";
+import { useTodo } from "../../container/context/todoContext";
 
 // Form add
 import TodoAddForm from "./TodoAddForm";
 
-// To-do type
+// Types
 import { Todo as TodoInterface } from "../../types/todo";
+import { SubmitTodoInterf } from "../../types/functionsTypes";
 
 // Date formatting
 import { format } from "date-fns";
 
-import { getDayColor } from "../../container/todoList/calendarExpColor";
+// Utils function
+import { getDayColor } from "../../container/todoListUtils/calendarExpColor";
 
-type Props = {};
+type Props = {
+  handleToggle: (value: number) => MouseEventHandler;
+  handleDeleteTodo: (id: number) => void;
+  handleSubmitTodo: (val: SubmitTodoInterf) => void;
+};
 
-const TodoList = (props: Props) => {
+const TodoList = ({
+  handleToggle,
+  handleDeleteTodo,
+  handleSubmitTodo,
+}: Props) => {
   //   To-do context
-  const { todos, dispatch } = useTodo();
-
-  const handleToggle = (value: number) => () => {
-    dispatch({ type: "UPDATE", payload: value });
-  };
-
-  const handleDeleteTodo = (id: number) => {
-    dispatch({ type: "DELETE", payload: id });
-  };
+  const { todos } = useTodo();
 
   return (
     <List
@@ -55,8 +59,38 @@ const TodoList = (props: Props) => {
         paddingX: 2,
       }}
     >
-      <TodoAddForm />
+      <TodoAddForm handleSubmitTodo={handleSubmitTodo} />
       <TransitionGroup>
+        {todos.length === 0 && (
+          <Box
+            sx={{
+              paddingX: 2,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              paddingTop: 2,
+            }}
+          >
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={40}
+              animation="wave"
+            />
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={40}
+              animation="wave"
+            />
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={40}
+              animation="wave"
+            />
+          </Box>
+        )}
         {todos?.map((todo, i) => {
           const labelId = `checkbox-list-label-${todo.todo}`;
 
